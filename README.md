@@ -1,3 +1,20 @@
+# Singing Contest System
+
+This project involves developing a Java-based computer system to manage singers competing in a singing contest. The system will have three roles: administrator, singer, and voter.
+
+## Getting Started
+
+### Prerequisites
+
+To run this project, you'll need:
+
+- Java SE Development Kit (JDK) 8 or higher installed on your machine.
+- A Java Integrated Development Environment (IDE) like Eclipse or IntelliJ IDEA to build and run the project.
+
+### Installing
+
+1. Clone this repository to your local machine using the command:
+git clone https://github.com/lukyjuranek/singing-contest-organizer.git
 
 2. Import the project into your Java IDE.
 

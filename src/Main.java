@@ -51,9 +51,9 @@ public class Main {
          * @return id
          */
         // Loop through the users array and return the user id with the given username
-        for (int i = 0; i < users.length; i++) {
-            if (users[i].getUsername().equals(username)) {
-                return users[i].getId();
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return user.getId();
             }
         }
         return -1;
@@ -83,9 +83,9 @@ public class Main {
          * @return user
          */
         // Loop through the users array and return the username with the given id
-        for (int i = 0; i < users.length; i++) {
-            if (users[i].getId() == id) {
-                return users[i];
+        for (User user : users) {
+            if (user.getId() == id) {
+                return user;
             }
         }
         return null;
@@ -94,19 +94,15 @@ public class Main {
     public static boolean checkUsernameAndPassword(String username, String password, User[] users) {
         /**
          * Checks the username and password
-         * 
+         *
          * @param username
          * @param password
-         * 
+         *
          * return boolean
          */
-        for (int i = 0; i < users.length; i++) {
-            if (users[i].getUsername().equals(username)) {
-                if (users[i].checkPassword(password)) {
-                    return true;
-                } else {
-                    return false;
-                }
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return user.checkPassword(password);
             }
         }
         return false;
@@ -132,46 +128,38 @@ public class Main {
     }
 
     public static void askForOptionAndExecute() {
-        /** Asks the user to enter the option */
+        //
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select an option: ");
         int option = scanner.nextInt();
-        if (option == 1) {
-            showSingers();
-        } else if (option == 2) {
-            showSongs();
-        } else if (option == 3) {
-            showVoters();
-        } else if (option == 4) {
-            showVotes();
-        } else if (option == 5) {
-            addSongOrGenre();
-        } else if (option == 6) {
-            if (singedInUserRole().equals("admin")) {
-                registerUser();
-            } else {
-                System.out.println("Admin privileges required");
-            }
-        } else if (option == 7) {
-            if (singedInUserRole().equals("admin")) {
-                updateUserData();
-            } else {
-                System.out.println("Admin privileges required");
-            }
-        } else if (option == 8) {
-            if (singedInUserRole().equals("admin")) {
-                removeUser();
-            } else {
-                System.out.println("Admin privileges required");
-            }
-        } else if (option == 9) {
-            signOut();
-        } else if (option == 10) {
-            quit();
-        } else {
-            System.out.println("No option selected");
+        switch (option) {
+            case 1 -> showSingers();
+            case 2 -> showSongs();
+            case 3 -> showVoters();
+            case 4 -> showVotes();
+            case 5 -> addSongOrGenre();
+            case 6 -> handleAdminOption("registerUser");
+            case 7 -> handleAdminOption("updateUserData");
+            case 8 -> handleAdminOption("removeUser");
+            case 9 -> signOut();
+            case 10 -> quit();
+            default -> System.out.println("No option selected");
         }
     }
+
+    public static void handleAdminOption(String option) {
+        if (singedInUserRole().equals("admin")) {
+            switch (option) {
+                case "registerUser" -> registerUser();
+                case "updateUserData" -> updateUserData();
+                case "removeUser" -> removeUser();
+                default -> System.out.println("Invalid admin option");
+            }
+        } else {
+            System.out.println("Admin privileges required");
+        }
+    }
+
 
     public static String singedInUserRole() {
         /** Returns the signedin user role

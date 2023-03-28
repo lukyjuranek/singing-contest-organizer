@@ -198,6 +198,12 @@ public class Main {
 
     public static void showSingers() {
         /** Prints the singers */
+        for (User user : users)
+        {
+            if (user.getRole() == "singer"){
+            System.out.print(user.getUsername() + ", ");}
+
+        }
     }
 
     public static void showSongs() {

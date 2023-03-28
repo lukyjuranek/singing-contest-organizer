@@ -8,9 +8,19 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        users = append(users, new User("admin", "admin", 0, "admin"));
-        users = append(users, new User("lukas", "pass", 5, "singer"));
-        users = append(users, new User("joe", "1234", 76, "singer"));
+        users = append(users, new User("admin", "admin", 1, "admin"));
+        users = append(users, new User("lukas", "pass", 2, "singer"));
+        users = append(users, new User("joe", "1234", 3, "singer"));
+        users = append(users, new User("Adele", "1", 4, "singer"));
+        users = append(users, new User("Beyonce", "2", 5, "singer"));
+        users = append(users, new User("Ed Sheeran", "3", 6, "singer"));
+        users = append(users, new User("Taylor Swift", "4", 7, "singer"));
+        users = append(users, new User("Bruno Mars", "5", 8, "singer"));
+        users = append(users, new User("Rihanna", "6", 9, "singer"));
+        users = append(users, new User("Justin Bieber", "7", 10, "singer"));
+        users = append(users, new User("Katy Perry", "8", 11, "singer"));
+        users = append(users, new User("Ariana Grande", "9", 12, "singer"));
+        users = append(users, new User("Shawn Mendes", "10", 13, "singer"));
 
         System.out.println("\nWelcome to singing contest organizer !\n");
 

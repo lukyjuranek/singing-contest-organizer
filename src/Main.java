@@ -12,7 +12,7 @@ public class Main {
         users = append(users, new User("lukas", "pass", 5, "singer"));
         users = append(users, new User("joe", "1234", 76, "singer"));
 
-        System.out.println("\nWelcome to singing contest organizer\n");
+        System.out.println("\nWelcome to singing contest organizer !\n");
 
         while (true) {
             if (signedInUserId != -1) {

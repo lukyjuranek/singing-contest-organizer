@@ -122,19 +122,19 @@ public class Main {
     public static void showMenu() {
         /** Prints the menu based on the user role and prints singed in user */
         System.out.println("\nSigned in as: " + getUsernameById(signedInUserId, users) + "(id: " + signedInUserId + ")");
-        System.out.println("Menu:");
-        System.out.println("\t1. Show singers");
-        System.out.println("\t2. Show songs");
-        System.out.println("\t3. Show voters");
-        System.out.println("\t4. Show votes");
-        System.out.println("\t5. Add song");
-        System.out.println("\t-----(Admin privileges required)-----");
-        System.out.println("\t6. Add user");
-        System.out.println("\t7. Update data");
-        System.out.println("\t8. Remove user");
-        System.out.println("\t-------------------------------------");
-        System.out.println("\t9. Sign out");
-        System.out.println("\t10. Quit");
+        System.out.print("Menu:\n" +
+                "\t1. Show singers\n" +
+                "\t2. Show songs\n" +
+                "\t3. Show voters\n" +
+                "\t4. Show votes\n" +
+                "\t5. Add song\n" +
+                "\t-----(Admin privileges required)-----\n" +
+                "\t6. Add user\n" +
+                "\t7. Update data\n" +
+                "\t8. Remove user\n" +
+                "\t-------------------------------------\n" +
+                "\t9. Sign out\n" +
+                "\t10. Quit\n\n");
     }
 
     public static void askForOptionAndExecute() {

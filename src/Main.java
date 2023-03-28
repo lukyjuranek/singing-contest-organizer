@@ -23,8 +23,8 @@ public class Main {
         users = append(users, new User("Katy Perry", "8", "name", "surname", 11, "singer"));
         users = append(users, new User("Ariana Grande", "9", "name", "surname", 12, "singer"));
         users = append(users, new User("Shawn Mendes", "10", "name", "surname", 13, "singer"));
+        users = append(users, new Singer("Elton John", "10", "name", "surname", 13, "singer", "Artisticnname", new ArrayList<String>(Arrays.asList("Song1", "Song2")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089", 150));
         users = append(users, new Singer("Shawn Mendes", "10", "name", "surname", 13, "singer", "Artisticnname", new ArrayList<String>(Arrays.asList("Song1", "Song2")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089", 190));
-
         System.out.println("\nWelcome to singing contest organizer !\n");
 
         while (true) {
@@ -197,14 +197,50 @@ public class Main {
     }
 
     public static void showSingers() {
-        /** Prints the singers */
-        for (User user : users)
-        {
-            if (user.getRole() == "singer"){
-            System.out.print(user.getUsername() + ", ");}
-
+        /** Prints the singers, sort by votes (ascending/descending) */
+        //empty list of singers
+        ArrayList<Singer> singers = new ArrayList<>(); // empty list of singers
+        for (User user : users) {
+            if (user instanceof Singer singer) {
+                // Cast the object to Singer type
+                singers.add(singer);
+            }
         }
-    }
+        char option;
+        System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
+        option = scanner.nextLine().charAt(0);
+        if (option == 'a') {
+            // Sort votes in ascending order using bubble sort
+            for (int j = 0; j < singers.size() - 1; j++) {
+                for (int i = 0; i < singers.size() - 1; i++) {
+                    if (singers.get(i).getReceivedVotes() > singers.get(i + 1).getReceivedVotes()) {
+                        Singer temp = singers.get(i);
+                        singers.set(i, singers.get(i + 1));
+                        singers.set(i + 1, temp);
+                    }
+                }
+            }
+        } else if (option == 'd') {
+            // Sort the votes in descending order using bubble sort
+            for (int j = 0; j < singers.size() - 1; j++) {
+                for (int i = 0; i < singers.size() - 1; i++) {
+                    if (singers.get(i).getReceivedVotes() < singers.get(i + 1).getReceivedVotes()) {
+                        Singer temp = singers.get(i);
+                        singers.set(i, singers.get(i + 1));
+                        singers.set(i + 1, temp);
+                    }
+                }
+            }
+        } else {
+            System.out.println("Invalid option");
+        }
+        // Print the singers
+        for (Singer singer : singers)
+            System.out.print("{" + singer.getUsername() + ", Votes: " + singer.getReceivedVotes() + "} ");
+        }
+
+
+
 
     public static void showSongs() {
         /** Prints the songs */

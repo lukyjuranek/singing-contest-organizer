@@ -1,5 +1,6 @@
 import classes.User;
 import classes.Singer;
+import classes.Voter;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -334,6 +335,40 @@ public class Main {
 
     public static void registerVoter() {
         /** Registers the voter */
+        // Ask for username, name, surname, password
+        System.out.print("Enter the username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter the name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter the surname: ");
+        String surname = scanner.nextLine();
+        System.out.print("Enter the password: ");
+        String password = scanner.nextLine();
+        // Creates a random id and if it already exists, create a new one
+        int id = (int) (Math.random() * 1000);
+        while (getUserObjectById(id, users) != null) {
+            id = (int) (Math.random() * 1000);
+        }
+
+        // Asks voter specific data,favouriteSingers, favouriteSongs, votes, country
+        System.out.print("Enter the favourite singer(s) seperated by commas: ");
+        String favouriteSingers = scanner.nextLine();
+        // Split the favourite singers by comma
+        ArrayList<String> favouriteSingersArray = new ArrayList<>(Arrays.asList(favouriteSingers.split(",")));
+        System.out.print("Enter the favourite song(s) seperated by commas: ");
+        String favouriteSongs = scanner.nextLine();
+        // Split the favourite songs by comma
+        ArrayList<String> favouriteSongsArray = new ArrayList<>(Arrays.asList(favouriteSongs.split(",")));
+        System.out.print("Enter the number of votes: ");
+        int votes = scanner.nextInt();
+        System.out.print("Enter the country: ");
+        String country = scanner.nextLine();
+
+
+        // Creates a new singer object
+        users = append(users, new Voter(username, password,name, surname, id, "admin", favouriteSingersArray, favouriteSongsArray, votes, country));
+        System.out.println("Voter registered successfully");
+
     }
 
     public static void registerAdmin() {

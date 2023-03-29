@@ -63,7 +63,6 @@ public class Main {
          * @param username
          * @return id
          */
-        // Loop through the users array and return the user id with the given username
         for (User user : users) {
             if (user.getUsername().equals(username)) {
                 return user.getId();
@@ -79,7 +78,6 @@ public class Main {
          * @param id
          * @return username
          */
-        // Loop through the users array and return the username with the given id
         for (int i = 0; i < users.length; i++) {
             if (users[i].getId() == id) {
                 return users[i].getUsername();
@@ -95,7 +93,6 @@ public class Main {
          * @param id
          * @return user
          */
-        // Loop through the users array and return the username with the given id
         for (User user : users) {
             if (user.getId() == id) {
                 return user;

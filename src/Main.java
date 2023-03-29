@@ -24,8 +24,8 @@ public class Main {
         users = append(users, new User("Katy Perry", "8", "name", "surname", 11, "singer"));
         users = append(users, new User("Ariana Grande", "9", "name", "surname", 12, "singer"));
         users = append(users, new User("Shawn Mendes", "10", "name", "surname", 13, "singer"));
-        users = append(users, new Singer("Elton John", "10", "name", "surname", 13, "singer", "Artisticnname", new ArrayList<String>(Arrays.asList("Song1", "Song2")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089", 150));
-        users = append(users, new Singer("Shawn Mendes", "10", "name", "surname", 13, "singer", "Artisticnname", new ArrayList<String>(Arrays.asList("Song1", "Song2")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089", 190));
+        users = append(users, new Singer("Elton John", "10", "name", "surname", 13, "singer", "Elton John", new ArrayList<String>(Arrays.asList("Rocket Man", "Crocodile Rock")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "USA", "2089", 150));
+        users = append(users, new Singer("Shawn Mendes", "10", "name", "surname", 13, "singer", "Shawn Mendez", new ArrayList<String>(Arrays.asList("Stitches", "song")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089", 190));
         System.out.println("\nWelcome to singing contest organizer !\n");
 
         while (true) {
@@ -123,19 +123,22 @@ public class Main {
     public static void showMenu() {
         /** Prints the menu based on the user role and prints singed in user */
         System.out.println("\nSigned in as: " + getUsernameById(signedInUserId, users) + "(id: " + signedInUserId + ")");
-        System.out.print("Menu:\n" +
-                "\t1. Show singers\n" +
-                "\t2. Show songs\n" +
-                "\t3. Show voters\n" +
-                "\t4. Show votes\n" +
-                "\t5. Add song\n" +
-                "\t-----(Admin privileges required)-----\n" +
-                "\t6. Add user\n" +
-                "\t7. Update data\n" +
-                "\t8. Remove user\n" +
-                "\t-------------------------------------\n" +
-                "\t9. Sign out\n" +
-                "\t10. Quit\n\n");
+        System.out.print("""
+                Menu:
+                \t1. Show singers
+                \t2. Show songs
+                \t3. Show voters
+                \t4. Show votes
+                \t5. Add song
+                \t-----(Admin privileges required)-----
+                \t6. Add user
+                \t7. Update data
+                \t8. Remove user
+                \t-------------------------------------
+                \t9. Sign out
+                \t10. Quit
+
+                """);
     }
 
     public static void askForOptionAndExecute() {
@@ -193,21 +196,23 @@ public class Main {
         scanner.close();
         System.exit(0);
     }
-
-    public static void showSingers() {
-        /** Prints the singers, sort by votes (ascending/descending) */
-        //empty list of singers
+    public static ArrayList<Singer> singersList(){
         ArrayList<Singer> singers = new ArrayList<>(); // empty list of singers
+
         for (User user : users) {
             if (user instanceof Singer singer) {
                 // Cast the object to Singer type
                 singers.add(singer);
             }
         }
-        char option;
-        System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
-        option = scanner.nextLine().charAt(0);
-        if (option == 'a') {
+        return singers;
+    }
+
+    public static void SortVotes(String option, ArrayList<Singer> singers){
+        /** Sorts the votes in ascending or descending order, bubble sort */
+        // Get the list of singers
+
+        if (option.equals("ascending")) {
             // Sort votes in ascending order using bubble sort
             for (int j = 0; j < singers.size() - 1; j++) {
                 for (int i = 0; i < singers.size() - 1; i++) {
@@ -218,8 +223,8 @@ public class Main {
                     }
                 }
             }
-        } else if (option == 'd') {
-            // Sort the votes in descending order using bubble sort
+        } else if (option.equals("descending")) {
+            // Sort votes in descending order using bubble sort
             for (int j = 0; j < singers.size() - 1; j++) {
                 for (int i = 0; i < singers.size() - 1; i++) {
                     if (singers.get(i).getReceivedVotes() < singers.get(i + 1).getReceivedVotes()) {
@@ -229,6 +234,25 @@ public class Main {
                     }
                 }
             }
+        } else {
+            System.out.println("Invalid option");
+        }
+    }
+
+
+    public static void showSingers() {
+        /** Prints the singers, sort by votes (ascending/descending) */
+        // Get the list of singers
+        ArrayList<Singer> singers = singersList();
+        char option;
+        System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
+        option = scanner.nextLine().charAt(0);
+        if (option == 'a') {
+            // call the sort method
+            SortVotes("ascending", singers);
+        } else if (option == 'd') {
+            // call the sort method
+            SortVotes("descending", singers);
         } else {
             System.out.println("Invalid option");
         }
@@ -242,7 +266,32 @@ public class Main {
 
     public static void showSongs() {
         /** Prints the songs */
-    }
+        // Get the list of singers
+        ArrayList<Singer> singers = singersList();
+        char option;
+        System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
+        option = scanner.nextLine().charAt(0);
+        if (option == 'a') {
+            // call the sort method
+            SortVotes("ascending", singers);
+
+
+        } else if (option == 'd') {
+            // call the sort method
+            SortVotes("descending", singers);
+        } else {
+            System.out.println("Invalid option");
+        }
+
+        //Sort votes in ascending order using quick sort
+        for (Singer singer : singers) {
+                singer.sortSongsAlphabet();
+        }
+        for (Singer singer : singers)
+            System.out.print("{" + singer.getArtisticName() + " Songs: " + singer.showSongs() + " Votes: " + singer.getReceivedVotes() + "} ");
+        }
+
+
 
     public static void showVoters() {
         /** Prints the voters */

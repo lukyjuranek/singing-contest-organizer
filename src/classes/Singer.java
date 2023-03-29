@@ -20,6 +20,19 @@ public class Singer extends User {
         this.receivedVotes = receivedVotes;
     }
 
+    public void sortSongsAlphabet(){
+        // sort songs in alphabetical order
+        for (int i = 0; i < songTitles.size(); i++) {
+            for (int j = i + 1; j < songTitles.size(); j++) {
+                if (songTitles.get(i).compareTo(songTitles.get(j)) > 0) {
+                    String temp = songTitles.get(i);
+                    songTitles.set(i, songTitles.get(j));
+                    songTitles.set(j, temp);
+                }
+            }
+        }
+    }
+
     public String getArtisticName() {
         return artisticName;
     }
@@ -30,6 +43,15 @@ public class Singer extends User {
 
     public ArrayList<String> getSongTitles() {
         return songTitles;
+    }
+    public String showSongs() {
+        StringBuilder toShow;
+        toShow = new StringBuilder();
+        for (String song : songTitles)
+            toShow.append(song).append(", ");
+        toShow.delete(toShow.length() - 2, toShow.length()); // delete last ", "
+        toShow.append(".");
+        return toShow.toString();
     }
 
     public void setSongTitles(ArrayList<String> songTitles) {

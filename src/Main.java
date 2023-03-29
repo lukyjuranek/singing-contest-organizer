@@ -263,7 +263,25 @@ public class Main {
     }
 
     public static void registerUser() {
-        /** Registers the user */
+        /** Registers new user */
+        String role;
+        while (true) {
+            System.out.print("Select the role of the user (singer/voter/admin): ");
+            role = scanner.nextLine();
+            switch (role) {
+                case "singer":
+                    registerSinger();
+                    return;
+                case "voter":
+                    registerVoter();
+                    return;
+                case "admin":
+                    registerAdmin();
+                    return;
+                default:
+                    System.out.println("Invalid role");
+            }
+        }
     }
 
     public static void updateUserData() {
@@ -276,10 +294,68 @@ public class Main {
 
     public static void registerSinger() {
         /** Registers the singer */
+        // Ask for username, name, surname, password
+        System.out.print("Enter the username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter the name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter the surname: ");
+        String surname = scanner.nextLine();
+        System.out.print("Enter the password: ");
+        String password = scanner.nextLine();
+        // Creates a random id and if it already exists, create a new one
+        int id = (int) (Math.random() * 1000);
+        while (getUserObjectById(id, users) != null) {
+            id = (int) (Math.random() * 1000);
+        }
+
+        // Asks singer specific data
+        System.out.print("Enter the artistic name: ");
+        String artisticName = scanner.nextLine();
+        System.out.print("Enter the song title(s): ");
+        String songTitles = scanner.nextLine();
+        // Split the song titles by comma
+        ArrayList<String> songTitlesArray = new ArrayList<>(Arrays.asList(songTitles.split(",")));
+        System.out.print("Enter the genre(s): ");
+        String genres = scanner.nextLine();
+        // Split the genres by comma
+        ArrayList<String> genresArray = new ArrayList<>(Arrays.asList(genres.split(",")));
+        System.out.print("Enter the date of release of the last song: ");
+        String dateOfRelease = scanner.nextLine();
+        System.out.print("Enter the country: ");
+        String country = scanner.nextLine();
+        System.out.print("Enter the number of votes received: ");
+        int receivedVotes = scanner.nextInt();
+
+        // Creates a new singer object
+        users = append(users, new Singer(username, password,name, surname, id, "admin", artisticName, songTitlesArray, genresArray, dateOfRelease, country, receivedVotes));
+        System.out.println("Singer registered successfully");
     }
 
     public static void registerVoter() {
         /** Registers the voter */
+    }
+
+    public static void registerAdmin() {
+        /** Registers the admin */
+        // Asks for username, name, surname, password
+        System.out.print("Enter the username: ");
+        String username = scanner.nextLine();
+        System.out.print("Enter the name: ");
+        String name = scanner.nextLine();
+        System.out.print("Enter the surname: ");
+        String surname = scanner.nextLine();
+        System.out.print("Enter the password: ");
+        String password = scanner.nextLine();
+        // Creates a random id and if it already exists, create a new one
+        int id = (int) (Math.random() * 1000);
+        while (getUserObjectById(id, users) != null) {
+            id = (int) (Math.random() * 1000);
+        }
+
+        // Creates a new user object
+        users = append(users, new User(username, password,name, surname, id, "admin"));
+        System.out.println("Singer registered successfully");
     }
 
     public static <T> T[] append(T[] arr, T element) {

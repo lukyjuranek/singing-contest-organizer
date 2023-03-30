@@ -442,6 +442,33 @@ public class Main {
 
     public static void removeUser() {
         /** Lets you select the user and delete the user */
+        String temp;
+            System.out.print("Select the user to delete: ");
+            temp = scanner.nextLine();
+
+            User new_arr[] = new User[users.length - 1];
+            boolean aux = false;
+
+            for (int i = 0, k = 0; i < users.length - 1; i++, k++) {
+                if (temp.equals(users[i].getUsername())) {
+                    i++;
+                };
+                new_arr[k] = users[i];
+            }
+
+            for (int i = 0; i < users.length - 1; i++) {
+                if (new_arr.equals(users)) {
+                    System.out.print("User was not able to be deleted");
+                    aux = false;
+                } else {
+                    aux = true;
+                }
+            }
+
+            if (aux == true) {
+                users = new_arr;
+                System.out.println("User deleted successfully");
+            }
     }
 
     public static void registerSinger() {

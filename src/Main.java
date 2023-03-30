@@ -1,3 +1,4 @@
+import classes.Song;
 import classes.User;
 import classes.Singer;
 import classes.Voter;
@@ -25,8 +26,10 @@ public class Main {
         users = append(users, new User("Taylor Swift", "4", "name", "surname", 7, "singer"));
         users = append(users, new User("Bruno Mars", "5", "name", "surname", 8, "singer"));
         users = append(users, new User("Rihanna", "6", "name", "surname", 9, "singer"));
-        users = append(users, new Singer("Elton John", "10", "name", "surname", 13, "singer", "Elton John", new ArrayList<String>(Arrays.asList("Rocket Man", "Crocodile Rock")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "USA", "2089", 150));
-        users = append(users, new Singer("Shawn Mendes", "10", "name", "surname", 13, "singer", "Shawn Mendez", new ArrayList<String>(Arrays.asList("Stitches", "song")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089", 190));
+        Song song1 = new Song(10, "B Song name here");
+        Song song2 = new Song(10, "A Song name here");
+        users = append(users, new Singer("Elton John", "10", "name", "surname", 13, "singer", "Elton John", new ArrayList<Song>(Arrays.asList(song1, song2)), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "USA", "2089", 150));
+        users = append(users, new Singer("Shawn Mendes", "10", "name", "surname", 13, "singer", "Shawn Mendez",new ArrayList<Song>(Arrays.asList(song1, song2)) , new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089", 190));
         System.out.println("\nWelcome to singing contest organizer !\n");
 
         while (true) {
@@ -348,7 +351,7 @@ public class Main {
                 singer.sortSongsAlphabet();
         }
         for (Singer singer : singers)
-            System.out.print("{" + singer.getArtisticName() + " Songs: " + singer.showSongs() + " Votes: " + singer.getReceivedVotes() + "} ");
+            System.out.print("{" + singer.getArtisticName() + ", Songs: " + singer.showSongs() + " Total Votes: " + singer.getReceivedVotes() + "} ");
         }
 
     public static void sortVotersAlphabetic(ArrayList<Voter> voters){
@@ -373,7 +376,7 @@ public class Main {
 
         // Print the singers in alphabetical order first
         for (Voter voter : voters)
-            System.out.print("{" + voter.getUsername() + ", Votes: " + voter.getVotes() + "} ");
+            System.out.print("{" + voter.getUsername() + ", Votes Given: " + voter.getVotes() + "} ");
         System.out.println();
 
         System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
@@ -491,10 +494,17 @@ public class Main {
         // Asks singer specific data
         System.out.print("Enter the artistic name: ");
         String artisticName = scanner.nextLine();
-        System.out.print("Enter the song title(s): ");
-        String songTitles = scanner.nextLine();
+        System.out.print("How many songs will be entered? ");
+        int songCount = Integer.parseInt(scanner.nextLine());
+        ArrayList<Song> songs = new ArrayList<>();
+        for (int i = 0 ;  i < songCount ; i++) {
+            System.out.print("Enter a song title: ");
+            String songTitle = scanner.nextLine();
+            Song songObject = new Song(0, songTitle);
+            songs.add(i, songObject);
+        }
         // Split the song titles by comma
-        ArrayList<String> songTitlesArray = new ArrayList<>(Arrays.asList(songTitles.split(",")));
+
         System.out.print("Enter the genre(s): ");
         String genres = scanner.nextLine();
         // Split the genres by comma
@@ -507,7 +517,7 @@ public class Main {
         int receivedVotes = scanner.nextInt();
 
         // Creates a new singer object
-        users = append(users, new Singer(username, password,name, surname, id, "admin", artisticName, songTitlesArray, genresArray, dateOfRelease, country, receivedVotes));
+        users = append(users, new Singer(username, password,name, surname, id, "admin", artisticName, songs, genresArray, dateOfRelease, country, receivedVotes));
         System.out.println("Singer registered successfully");
     }
 

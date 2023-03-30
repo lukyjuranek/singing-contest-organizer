@@ -1,6 +1,8 @@
 import classes.User;
 import classes.Singer;
 import classes.Voter;
+
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.Arrays;
 import java.util.ArrayList;
@@ -11,6 +13,9 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
+        //make a new voter
+        users = append(users, new Voter("Alex", "pass", "name", "surname", 0, "voter", new ArrayList<String>(Arrays.asList("Adele", "Beyonce", "Ed Sheeran", "Taylor Swift", "Bruno Mars", "Rihanna", "Justin Bieber", "Katy Perry", "Ariana Grande", "Lady Gaga")), new ArrayList<String>(Arrays.asList("Hello", "Rolling in the Deep", "Someone Like You", "Set Fire to the Rain", "Skyfall", "When We Were Young",  "Hometown Glory")), 10, "USA"));
+        users = append(users, new Voter("Carlos", "pass", "name", "surname", 0, "voter", new ArrayList<String>(Arrays.asList("Adele", "Beyonce", "Ed Sheeran", "Taylor Swift", "Bruno Mars", "Rihanna", "Justin Bieber", "Katy Perry", "Ariana Grande", "Lady Gaga")), new ArrayList<String>(Arrays.asList("Hello", "Rolling in the Deep", "Someone Like You", "Set Fire to the Rain", "Skyfall", "When We Were Young",  "Hometown Glory")), 15, "USA"));
         users = append(users, new User("admin", "admin", "name", "surname", 1, "admin"));
         users = append(users, new User("lukas", "pass", "name", "surname", 2, "singer"));
         users = append(users, new User("joe", "1234", "name", "surname", 3, "singer"));
@@ -20,10 +25,6 @@ public class Main {
         users = append(users, new User("Taylor Swift", "4", "name", "surname", 7, "singer"));
         users = append(users, new User("Bruno Mars", "5", "name", "surname", 8, "singer"));
         users = append(users, new User("Rihanna", "6", "name", "surname", 9, "singer"));
-        users = append(users, new User("Justin Bieber", "7", "name", "surname", 10, "singer"));
-        users = append(users, new User("Katy Perry", "8", "name", "surname", 11, "singer"));
-        users = append(users, new User("Ariana Grande", "9", "name", "surname", 12, "singer"));
-        users = append(users, new User("Shawn Mendes", "10", "name", "surname", 13, "singer"));
         users = append(users, new Singer("Elton John", "10", "name", "surname", 13, "singer", "Elton John", new ArrayList<String>(Arrays.asList("Rocket Man", "Crocodile Rock")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "USA", "2089", 150));
         users = append(users, new Singer("Shawn Mendes", "10", "name", "surname", 13, "singer", "Shawn Mendez", new ArrayList<String>(Arrays.asList("Stitches", "song")), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089", 190));
         System.out.println("\nWelcome to singing contest organizer !\n");
@@ -196,17 +197,40 @@ public class Main {
         scanner.close();
         System.exit(0);
     }
-    public static ArrayList<Singer> singersList(){
+    public static ArrayList<Singer> createListSingers() {
+        /** Creates a list of singers */
         ArrayList<Singer> singers = new ArrayList<>(); // empty list of singers
-
         for (User user : users) {
             if (user instanceof Singer singer) {
-                // Cast the object to Singer type
                 singers.add(singer);
+                }
+            }
+        return singers;
+        }
+
+    public static ArrayList<Voter> createListVoter(){
+        /** Creates a list of voters */
+        ArrayList<Voter> voters = new ArrayList<>(); // empty list of voters
+        for (User user : users) {
+            if (user instanceof Voter voter) {
+                // Cast the object to Singer type
+                voters.add(voter);
             }
         }
-        return singers;
+        return voters;
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static void SortVotes(String option, ArrayList<Singer> singers){
         /** Sorts the votes in ascending or descending order, bubble sort */
@@ -239,11 +263,51 @@ public class Main {
         }
     }
 
+    public static void partition(ArrayList<Voter> voters, int low, int high) {
+        /** Partitions the list of voters by votes */
+        int i = low, j = high;
+        // Get the pivot element from the middle of the list
+        int pivot = voters.get(low + (high - low) / 2).getVotes();
+        while (i <= j) { // Divide into two lists
+            // If the current value from the left list is smaller than the pivot, vise versa
+            while (voters.get(i).getVotes() < pivot) {
+                i++;
+            }
+            while (voters.get(j).getVotes() > pivot) {
+                j--;
+            }
+            if (i <= j) { // Swap elements to the correct side
+                Voter temp = voters.get(i);
+                voters.set(i, voters.get(j));
+                voters.set(j, temp);
+                i++;
+                j--;
+            }
+        }
+        if (low < j) // Recursion
+            partition(voters, low, j);
+        if (i < high)
+            partition(voters, i, high);
+    }
+    public static void sortVotesGiven(String option, ArrayList<Voter> voters) {
+        /** Sorts the votes in ascending or descending order, bubble sort */
+        // Sort the list of voters by given votes using quick sort
+        if (option.equals("ascending")) {
+            partition(voters, 0, voters.size() - 1);
+        } else if (option.equals("descending")) {
+            partition(voters, 0, voters.size() - 1);
+            Collections.reverse(voters);
+        } else {
+            System.out.println("Invalid option");
+        }
+    }
+
+
 
     public static void showSingers() {
         /** Prints the singers, sort by votes (ascending/descending) */
         // Get the list of singers
-        ArrayList<Singer> singers = singersList();
+        ArrayList<Singer> singers = createListSingers();
         char option;
         System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
         option = scanner.nextLine().charAt(0);
@@ -262,12 +326,10 @@ public class Main {
         }
 
 
-
-
     public static void showSongs() {
         /** Prints the songs */
         // Get the list of singers
-        ArrayList<Singer> singers = singersList();
+        ArrayList<Singer> singers = createListSingers();
         char option;
         System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
         option = scanner.nextLine().charAt(0);
@@ -275,15 +337,13 @@ public class Main {
             // call the sort method
             SortVotes("ascending", singers);
 
-
         } else if (option == 'd') {
             // call the sort method
             SortVotes("descending", singers);
         } else {
             System.out.println("Invalid option");
         }
-
-        //Sort votes in ascending order using quick sort
+        //Sort songs in alphabetical order
         for (Singer singer : singers) {
                 singer.sortSongsAlphabet();
         }
@@ -291,11 +351,53 @@ public class Main {
             System.out.print("{" + singer.getArtisticName() + " Songs: " + singer.showSongs() + " Votes: " + singer.getReceivedVotes() + "} ");
         }
 
-
+    public static void sortVotersAlphabetic(ArrayList<Voter> voters){
+    // sort voters in alphabetical order
+        for (int j = 0; j < voters.size() - 1; j++) {
+            for (int i = 0; i < voters.size() - 1; i++) {
+                // Compare the usernames by full alphanumerical value
+                if (voters.get(i).getUsername().compareTo(voters.get(i + 1).getUsername()) > 0) {
+                    Voter temp = voters.get(i);
+                    voters.set(i, voters.get(i + 1));
+                    voters.set(i + 1, temp);
+                }
+            }
+        }
+    }
 
     public static void showVoters() {
-        /** Prints the voters */
+        /** Prints the voters, sort by votes (ascending/descending) */
+        ArrayList<Voter> voters = createListVoter();
+        char option;
+        sortVotersAlphabetic(voters);
+
+        // Print the singers in alphabetical order first
+        for (Voter voter : voters)
+            System.out.print("{" + voter.getUsername() + ", Votes: " + voter.getVotes() + "} ");
+        System.out.println();
+
+        System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
+        option = scanner.nextLine().charAt(0);
+        if (option == 'a') {
+            // call the sort method (quick sort)
+            sortVotesGiven("ascending", voters);
+        } else if (option == 'd') {
+            // call the sort method (quick sort)
+            sortVotesGiven("descending", voters);
+        } else {
+            System.out.println("Invalid option");
+        }
+        // Print the singers after sorting
+        for (Voter voter : voters)
+            System.out.print("{" + voter.getUsername() + ", Votes: " + voter.getVotes() + "} ");
     }
+
+
+
+
+
+    /** Prints the voters */
+
 
     public static void showVotes() {
         /** Prints the votes */

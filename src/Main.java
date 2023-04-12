@@ -25,8 +25,8 @@ public class Main {
         Song song2 = new Song(10, "b song");
         Song song3 = new Song(15, "c song");
         Song song4 = new Song(20, "d song");
-        users = append(users, new Singer("Elton John", "10", "name", "surname", 13, "singer", "Elton John", new ArrayList<Song>(Arrays.asList(song1, song2)), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "USA", "2089"));
-        users = append(users, new Singer("Shawn Mendes", "10", "name", "surname", 13, "singer", "Shawn Mendez",new ArrayList<Song>(Arrays.asList(song3, song4)) , new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089"));
+        users = append(users, new Singer("singer", "pass", "name", "surname", 4, "singer", "Elton John", new ArrayList<Song>(Arrays.asList(song1, song2)), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "USA", "2089"));
+        users = append(users, new Singer("singer2", "pass ", "name", "surname", 5, "singer", "Shawn Mendez",new ArrayList<Song>(Arrays.asList(song3, song4)) , new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089"));
         System.out.println("\nWelcome to singing contest organizer !\n");
 
         while (true) {
@@ -129,14 +129,16 @@ public class Main {
                 \t1. Show singers
                 \t2. Show songs
                 \t3. Show voters
+                \t-----(Singer privileges required)-----
                 \t4. Show votes
                 \t5. Add song
-                \t6. Vote song 
-                \t-----(Admin privileges required)-----
+                \t-----(Voter privileges required)------
+                \t6. Vote song
+                \t-----(Admin privileges required)------
                 \t7. Add user
                 \t8. Update data
                 \t9. Remove user
-                \t-------------------------------------
+                \t--------------------------------------
                 \t10. Sign out
                 \t11. Quit
 
@@ -152,9 +154,9 @@ public class Main {
             case 1 -> showSingers();
             case 2 -> showSongs();
             case 3 -> showVoters();
-            case 4 -> showVotes();
-            case 5 -> addSongOrGenre();
-            case 6 -> voteSong();
+            case 4 -> handleSingerOption("showVotes");
+            case 5 -> handleSingerOption("addSong");
+            case 6 -> handleVoterOption("voteSong");
             case 7 -> handleAdminOption("registerUser");
             case 8 -> handleAdminOption("updateUserData");
             case 9 -> handleAdminOption("removeUser");
@@ -176,19 +178,35 @@ public class Main {
             System.out.println("Admin privileges required");
         }
     }
+    public  static void handleVoterOption(String option){
+        if (singedInUserRole().equals("voter")) {
+            switch (option) {
+                case "voteSong" -> voteSong();
+                default -> System.out.println("Invalid voter option");
+            }
+        } else {
+            System.out.println("Voter privileges required");
+        }
+    }
+    public static void handleSingerOption(String option){
+        if (singedInUserRole().equals("singer")) {
+            switch (option) {
+                case "showVotes" -> showVotes();
+                case "addSong" -> addSongOrGenre();
+                default -> System.out.println("Invalid singer option");
+            }
+        } else {
+            System.out.println("Singer privileges required");
+        }
+    }
 
 
     public static String singedInUserRole() {
-        /** Returns the signedin user role
-         * 
-         * return String
-         */
         User singedInUser = getUserObjectById(signedInUserId, users);
         return singedInUser.getRole();
     }
 
     public static void signOut(){
-        /** Sings out the user */
         signedInUserId = -1;
         System.out.println("Signed out");
     }
@@ -347,7 +365,7 @@ public class Main {
         }
         //Sort songs in alphabetical order
         for (Singer singer : singers) {
-                singer.sortSongsAlphabet();
+                singer.sortSongsAlphabet("ascending");
         }
         for (Singer singer : singers)
             System.out.print("{" + singer.getArtisticName() + ", Songs: " + singer.showSongs() + " Total Votes: " + singer.getReceivedVotes() + "} ");
@@ -402,10 +420,37 @@ public class Main {
 
 
     public static void showVotes() {
+/* This option can be used just by a singer. The program will show the list
+of the song(s) with the received votes alphabetically. The program will also allow the
+user to change the order of the number of votes, ascending or descending.
+*/
+        //get the current users songs
+        //print the songs with options to change the order
+        //get the users id
 
+        User singedInUser = getUserObjectById(signedInUserId, users);
 
+        if (singedInUser instanceof Singer singer) {
+
+            //ask for the order
+            System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
+            char option = scanner.nextLine().charAt(0);
+            if (option == 'a') {
+                // call the sort method
+                singer.sortSongsAlphabet("ascending");
+            } else if (option == 'd') {
+                // call the sort method
+                singer.sortSongsAlphabet("descending");
+            } else {
+                System.out.println("Invalid option");
+            }
+            System.out.println("Your songs: " + singer.showSongs());
+
+        }
         /** Prints the votes */
     }
+
+
 
     public static void addSongOrGenre() {
         /**

@@ -23,15 +23,28 @@ public class Singer extends User {
             this.receivedVotes += song.getVotes();
     }
 
-    public void sortSongsAlphabet(){
+    public void sortSongsAlphabet(String order){
         // sort songs in alphabetical order
-        for (int i = 0; i < songs.size(); i++) {
-            for (int j = i + 1; j < songs.size(); j++) {
-                if (songs.get(i).getSongName().compareTo(songs.get(j).getSongName()) > 0) {
-                    // swap the song objects by name
-                    Song temp = songs.get(i);
-                    songs.set(i, songs.get(j));
-                    songs.set(j, temp);
+        if (order.equals("ascending")) {
+            for (int i = 0; i < songs.size(); i++) {
+                for (int j = i + 1; j < songs.size(); j++) {
+                    if (songs.get(i).getSongName().compareTo(songs.get(j).getSongName()) > 0) {
+                        // swap the song objects by name
+                        Song temp = songs.get(i);
+                        songs.set(i, songs.get(j));
+                        songs.set(j, temp);
+                    }
+                }
+            }
+        } else if (order.equals("descending")){
+            for (int i = 0; i < songs.size(); i++) {
+                for (int j = i + 1; j < songs.size(); j++) {
+                    if (songs.get(i).getSongName().compareTo(songs.get(j).getSongName()) < 0) {
+                        // swap the song objects by name
+                        Song temp = songs.get(i);
+                        songs.set(i, songs.get(j));
+                        songs.set(j, temp);
+                    }
                 }
             }
         }

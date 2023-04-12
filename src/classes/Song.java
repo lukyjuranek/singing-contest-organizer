@@ -9,6 +9,7 @@ public class Song {
     }
     public int getVotes() {return votes;}
     public String getSongName(){return songName;}
+    public void setVotes(int votes) {this.votes = votes;}
 
 
 }

@@ -20,16 +20,13 @@ public class Main {
         users = append(users, new User("admin", "admin", "name", "surname", 1, "admin"));
         users = append(users, new User("lukas", "pass", "name", "surname", 2, "singer"));
         users = append(users, new User("joe", "1234", "name", "surname", 3, "singer"));
-        users = append(users, new User("Adele", "1", "name", "surname", 4, "singer"));
-        users = append(users, new User("Beyonce", "2", "name", "surname", 5, "singer"));
-        users = append(users, new User("Ed Sheeran", "3", "name", "surname", 6, "singer"));
-        users = append(users, new User("Taylor Swift", "4", "name", "surname", 7, "singer"));
-        users = append(users, new User("Bruno Mars", "5", "name", "surname", 8, "singer"));
-        users = append(users, new User("Rihanna", "6", "name", "surname", 9, "singer"));
-        Song song1 = new Song(10, "B Song name here");
-        Song song2 = new Song(10, "A Song name here");
-        users = append(users, new Singer("Elton John", "10", "name", "surname", 13, "singer", "Elton John", new ArrayList<Song>(Arrays.asList(song1, song2)), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "USA", "2089", 150));
-        users = append(users, new Singer("Shawn Mendes", "10", "name", "surname", 13, "singer", "Shawn Mendez",new ArrayList<Song>(Arrays.asList(song1, song2)) , new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089", 190));
+
+        Song song1 = new Song(5, "a song");
+        Song song2 = new Song(10, "b song");
+        Song song3 = new Song(15, "c song");
+        Song song4 = new Song(20, "d song");
+        users = append(users, new Singer("Elton John", "10", "name", "surname", 13, "singer", "Elton John", new ArrayList<Song>(Arrays.asList(song1, song2)), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "USA", "2089"));
+        users = append(users, new Singer("Shawn Mendes", "10", "name", "surname", 13, "singer", "Shawn Mendez",new ArrayList<Song>(Arrays.asList(song3, song4)) , new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089"));
         System.out.println("\nWelcome to singing contest organizer !\n");
 
         while (true) {
@@ -134,13 +131,14 @@ public class Main {
                 \t3. Show voters
                 \t4. Show votes
                 \t5. Add song
+                \t6. Vote song 
                 \t-----(Admin privileges required)-----
-                \t6. Add user
-                \t7. Update data
-                \t8. Remove user
+                \t7. Add user
+                \t8. Update data
+                \t9. Remove user
                 \t-------------------------------------
-                \t9. Sign out
-                \t10. Quit
+                \t10. Sign out
+                \t11. Quit
 
                 """);
     }
@@ -156,11 +154,12 @@ public class Main {
             case 3 -> showVoters();
             case 4 -> showVotes();
             case 5 -> addSongOrGenre();
-            case 6 -> handleAdminOption("registerUser");
-            case 7 -> handleAdminOption("updateUserData");
-            case 8 -> handleAdminOption("removeUser");
-            case 9 -> signOut();
-            case 10 -> quit();
+            case 6 -> voteSong();
+            case 7 -> handleAdminOption("registerUser");
+            case 8 -> handleAdminOption("updateUserData");
+            case 9 -> handleAdminOption("removeUser");
+            case 10 -> signOut();
+            case 11 -> quit();
             default -> System.out.println("No option selected");
         }
     }
@@ -403,6 +402,8 @@ public class Main {
 
 
     public static void showVotes() {
+
+
         /** Prints the votes */
     }
 
@@ -414,6 +415,51 @@ public class Main {
     }
 
     public static void voteSong() {
+        boolean found = false;
+        //print list of songs using the method showSongs
+        ArrayList<Singer> singers = createListSingers();
+
+        showSongs();
+        //ask user to choose the song
+        System.out.print("Choose the song to vote for: ");
+        String song = scanner.nextLine();
+        //ask the user to confirm the operation
+        System.out.println("Are you sure you want to vote for this song? (y/n)");
+        char option = scanner.nextLine().charAt(0);
+        if (option == 'y') {
+            //update the number of votes
+            for (Singer singer : singers) {
+                for (Song song1 : singer.getSongs()) {
+                    if (song1.getSongName().equals(song)) {
+                        song1.setVotes(song1.getVotes() + 1);
+                        // update singers total votes
+                        singer.setReceivedVotes(singer.getReceivedVotes() + 1);
+                        found = true;
+                        // song is found, break the loop
+                        break;
+                    }
+                }
+            }
+
+        } else if (option == 'n') {
+            //return to the main menu
+            return;
+        } else {
+            System.out.println("Invalid option");
+        }
+        // show the list of songs with the updated number of votes
+
+        if (!found){
+            System.out.println("Song not found");
+            return;
+        }
+
+
+        // print the list of songs with the updated number of votes
+        showSongs();
+
+
+
         /** Asks the user to vote for a song */
     }
 
@@ -449,7 +495,7 @@ public class Main {
             System.out.print("Select the user to delete: ");
             temp = scanner.nextLine();
 
-            User new_arr[] = new User[users.length - 1];
+            User[] new_arr = new User[users.length - 1];
             boolean aux = false;
 
             for (int i = 0, k = 0; i < users.length - 1; i++, k++) {
@@ -460,7 +506,7 @@ public class Main {
             }
 
             for (int i = 0; i < users.length - 1; i++) {
-                if (new_arr.equals(users)) {
+                if (Arrays.equals(new_arr, users)) {
                     System.out.print("User was not able to be deleted");
                     aux = false;
                 } else {
@@ -468,7 +514,7 @@ public class Main {
                 }
             }
 
-            if (aux == true) {
+            if (aux) {
                 users = new_arr;
                 System.out.println("User deleted successfully");
             }
@@ -513,11 +559,10 @@ public class Main {
         String dateOfRelease = scanner.nextLine();
         System.out.print("Enter the country: ");
         String country = scanner.nextLine();
-        System.out.print("Enter the number of votes received: ");
-        int receivedVotes = scanner.nextInt();
+
 
         // Creates a new singer object
-        users = append(users, new Singer(username, password,name, surname, id, "admin", artisticName, songs, genresArray, dateOfRelease, country, receivedVotes));
+        users = append(users, new Singer(username, password,name, surname, id, "admin", artisticName, songs, genresArray, dateOfRelease, country));
         System.out.println("Singer registered successfully");
     }
 

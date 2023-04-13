@@ -532,6 +532,42 @@ user to change the order of the number of votes, ascending or descending.
 
     public static void updateUserData() {
         /** Lets you select the user and update the data */
+
+        // Print the list of users with the username and the role
+        for (User user : users) {
+            System.out.println("Username: " + user.getUsername() + ", Role: " + user.getRole());
+        }
+
+        // Ask the administrator to select the one to update
+        System.out.print("Select the user to update: ");
+        String username = scanner.nextLine();
+
+        // Once selected, the administrator will change any data in the profile except for the role. If the user is a singer 
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                System.out.print("Enter the new username: ");
+                String newUsername = scanner.nextLine();
+                System.out.print("Enter the new password: ");
+                String newPassword = scanner.nextLine();
+
+
+                // Before storing the new data, the program will ask the administrator to confirm the operation
+                System.out.println("Are you sure you want to update the user? (y/n)");
+                char option = scanner.nextLine().charAt(0);
+                if (option == 'y') {
+                    user.setUsername(newUsername);
+                    user.setPassword(newPassword);
+                    System.out.println("User updated successfully");
+                } else if (option == 'n') {
+                    //return to the main menu
+                    return;
+                } else {
+                    System.out.println("Invalid option");
+                }
+            }
+        }
+
+
     }
 
     public static void removeUser() {

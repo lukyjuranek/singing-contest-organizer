@@ -15,7 +15,7 @@ As an administrator, you can:
 As a singer, you can:
 
 - View your details.
-- Upload your performance video.
+- Add your songs
 
 #### Voter
 

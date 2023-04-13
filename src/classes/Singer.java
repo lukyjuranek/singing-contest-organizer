@@ -67,28 +67,11 @@ public class Singer extends User {
         return toShow.toString();
     }
 
-    public void setSongTitles(ArrayList<Song> songs) {
-        this.songs = songs;
-    }
-
-    public ArrayList<String> getGenres() {
-        return genres;
-    }
-
     public void updateGenres(String genre) {
         this.genres.add(genre);
     }
-
-    public String getCountry() {
-        return country;
-    }
-
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public String getDateOfRelease() {
-        return dateOfRelease;
     }
 
     public void setDateOfRelease(String dateOfRelease) {
@@ -102,7 +85,6 @@ public class Singer extends User {
             
         return receivedVotes;
     }
-
     public ArrayList<Song> getSongs() {
         return songs;
     }

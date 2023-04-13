@@ -16,32 +16,12 @@ public class Voter extends User {
         this.country = country;
     }
 
-    public ArrayList<String> getFavouriteSingers() {
-        return favouriteSingers;
-    }
-
-    public void setFavouriteSingers(ArrayList<String> favouriteSingers) {
-        this.favouriteSingers = favouriteSingers;
-    }
-
-    public ArrayList<String> getFavouriteSongs() {
-        return favouriteSongs;
-    }
-
-    public void setFavouriteSongs(ArrayList<String> favouriteSongs) {
-        this.favouriteSongs = favouriteSongs;
-    }
-
     public int getVotes() {
         return votes;
     }
 
     public void setVotes(int votes) {
         this.votes = votes;
-    }
-
-    public String getCountry() {
-        return country;
     }
 
     public void setCountry(String country) {

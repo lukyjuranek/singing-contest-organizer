@@ -14,19 +14,22 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        // Creates some users for testing otherwise we would have to create them manually or have a database
-        users = append(users, new Voter("Alex", "pass", "name", "surname", 0, "voter", new ArrayList<String>(Arrays.asList("Adele", "Beyonce", "Ed Sheeran", "Taylor Swift", "Bruno Mars", "Rihanna", "Justin Bieber", "Katy Perry", "Ariana Grande", "Lady Gaga")), new ArrayList<String>(Arrays.asList("Hello", "Rolling in the Deep", "Someone Like You", "Set Fire to the Rain", "Skyfall", "When We Were Young",  "Hometown Glory")), 10, "USA"));
-        users = append(users, new Voter("Carlos", "pass", "name", "surname", 0, "voter", new ArrayList<String>(Arrays.asList("Adele", "Beyonce", "Ed Sheeran", "Taylor Swift", "Bruno Mars", "Rihanna", "Justin Bieber", "Katy Perry", "Ariana Grande", "Lady Gaga")), new ArrayList<String>(Arrays.asList("Hello", "Rolling in the Deep", "Someone Like You", "Set Fire to the Rain", "Skyfall", "When We Were Young",  "Hometown Glory")), 15, "USA"));
-        users = append(users, new User("admin", "admin", "name", "surname", 1, "admin"));
-        users = append(users, new User("lukas", "pass", "name", "surname", 2, "singer"));
-        users = append(users, new User("joe", "1234", "name", "surname", 3, "singer"));
+        // Create some users for testing
+        users = append(users, new Voter("Alice", "pass", "Alice", "Smith", 1, "voter", new ArrayList<>(Arrays.asList("The Weeknd", "Dua Lipa", "Drake", "Cardi B", "Post Malone", "Ariana Grande", "Billie Eilish", "Khalid", "Taylor Swift", "Bruno Mars")), new ArrayList<>(Arrays.asList("Blinding Lights", "Levitating", "God's Plan", "Bodak Yellow", "Circles", "7 Rings", "Bad Guy", "Talk", "Lover", "Uptown Funk")), 10, "Canada"));
+        users = append(users, new Voter("Elena", "pass", "Elena", "Garcia", 2, "voter", new ArrayList<>(Arrays.asList("Shakira", "J Balvin", "Rosalia", "Bad Bunny", "Enrique Iglesias", "Marc Anthony", "Daddy Yankee", "Jennifer Lopez", "Nicky Jam", "Ricky Martin")), new ArrayList<>(Arrays.asList("Hips Don't Lie", "Mi Gente", "Malamente", "Mia", "Bailando", "Vivir Mi Vida", "Gasolina", "On The Floor", "El Perdon", "Livin' La Vida Loca")), 15, "Spain"));
 
-        Song song1 = new Song(5, "a song");
-        Song song2 = new Song(10, "b song");
-        Song song3 = new Song(15, "c song");
-        Song song4 = new Song(20, "d song");
-        users = append(users, new Singer("singer", "pass", "name", "surname", 4, "singer", "Elton John", new ArrayList<Song>(Arrays.asList(song1, song2)), new ArrayList<String>(Arrays.asList("Pop", "Rock")), "USA", "2089"));
-        users = append(users, new Singer("singer2", "pass ", "name", "surname", 5, "singer", "Shawn Mendez",new ArrayList<Song>(Arrays.asList(song3, song4)) , new ArrayList<String>(Arrays.asList("Pop", "Rock")), "Spain", "2089"));
+        users = append(users, new User("admin", "admin", "name", "surname", 3, "admin"));
+        users = append(users, new User("lukas", "pass", "name", "surname", 4, "singer"));
+        users = append(users, new User("joe", "1234", "name", "surname", 5, "singer"));
+
+        Song song1 = new Song(5, "Shape of You");
+        Song song2 = new Song(10, "Uptown Funk");
+        Song song3 = new Song(15, "Bohemian Rhapsody");
+        Song song4 = new Song(20, "Billie Jean");
+
+        users = append(users, new Singer("singer", "pass", "John", "Legend", 6, "singer", "Ed Sheeran", new ArrayList<>(Arrays.asList(song1, song2)), new ArrayList<>(Arrays.asList("Pop", "R&B")), "UK", "1991"));
+        users = append(users, new Singer("singer2", "pass ", "Shawn", "Mendes", 7, "singer", "Queen", new ArrayList<>(Arrays.asList(song3, song4)) , new ArrayList<>(Arrays.asList("Rock", "Classic Rock")), "UK", "1970"));
+
         System.out.println("\nWelcome to singing contest organizer !\n");
 
         while (true) {
@@ -53,7 +56,7 @@ public class Main {
                     // if the username and password are incorrect, show an error message
                     System.out.println("Incorrect username or password");
                 }
-                ;
+
             }
         }
     }
@@ -80,9 +83,9 @@ public class Main {
          * @param id
          * @return username
          */
-        for (int i = 0; i < users.length; i++) {
-            if (users[i].getId() == id) {
-                return users[i].getUsername();
+        for (User user : users) {
+            if (user.getId() == id) {
+                return user.getUsername();
             }
         }
         return "";
@@ -209,9 +212,10 @@ public class Main {
 
     public static void handleVoterOption(String option) {
         if (singedInUserRole().equals("voter")) {
-            switch (option) {
-                case "voteSong" -> voteSong();
-                default -> System.out.println("Invalid voter option");
+            if (option.equals("voteSong")) {
+                voteSong();
+            } else {
+                System.out.println("Invalid voter option");
             }
         } else {
             System.out.println("Voter privileges required");
@@ -433,10 +437,7 @@ public class Main {
     }
 
     public static void showVotes() {
-        /* Prints the votes. This option can be used just by a singer. The program will show the list
-        of the song(s) with the received votes alphabetically. The program will also allow the
-        user to change the order of the number of votes, ascending or descending.
-        */
+        /** Prints the votes for users songs */
         User singedInUser = getUserObjectById(signedInUserId, users);
 
         if (singedInUser instanceof Singer singer) {
@@ -572,12 +573,7 @@ public class Main {
     
         // Finds the user to update
         User userToUpdate = getUserObjectById(getUserIdByUsername(username, users), users);
-        // for (User user : users) {
-        //     if (user.getUsername().equals(username)) {
-        //         userToUpdate = user;
-        //         break;
-        //     }
-        // }
+
     
         if (userToUpdate == null) {
             System.out.println("User not found");
@@ -591,8 +587,7 @@ public class Main {
         String newPassword = scanner.nextLine();
     
         // Prompts for the additional data based on the role of the user
-        if (userToUpdate instanceof Singer) {
-            Singer singerToUpdate = (Singer) userToUpdate;
+        if (userToUpdate instanceof Singer singerToUpdate) {
             System.out.print("Enter the new artistic name: ");
             String newArtisticName = scanner.nextLine();
             System.out.print("Enter the new country: ");
@@ -661,15 +656,16 @@ public class Main {
             for (int i = 0, k = 0; i < users.length - 1; i++, k++) {
                 if (temp.equals(users[i].getUsername())) {
                     i++;
-                };
+                }
                 new_arr[k] = users[i];
             }
-
+            // Check if the user was deleted
             for (int i = 0; i < users.length - 1; i++) {
                 if (Arrays.equals(new_arr, users)) {
                     System.out.print("User was not able to be deleted");
                     aux = false;
                 } else {
+                    // If the user was deleted, it returns true
                     aux = true;
                 }
             }
@@ -710,7 +706,6 @@ public class Main {
             Song songObject = new Song(0, songTitle);
             songs.add(i, songObject);
         }
-        // Split the song titles by comma
 
         System.out.print("Enter the genre(s): ");
         String genres = scanner.nextLine();
@@ -720,7 +715,6 @@ public class Main {
         String dateOfRelease = scanner.nextLine();
         System.out.print("Enter the country: ");
         String country = scanner.nextLine();
-
 
         // Creates a new singer object
         users = append(users, new Singer(username, password,name, surname, id, "admin", artisticName, songs, genresArray, dateOfRelease, country));
@@ -789,8 +783,8 @@ public class Main {
 
     public static <T> T[] append(T[] arr, T element) {
         /** Return the original array with a new element appended to it
-         * param array
-         * param element
+         * @param array
+         * @param element
          * 
          * return array
           */

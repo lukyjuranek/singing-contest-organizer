@@ -25,16 +25,9 @@ public class User {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
     public boolean checkPassword(String pass){
-        if (pass.equals(password)){
-            return true;
-        } else {
-            return false;
-        }
+        return pass.equals(password);
     }
 
     public void setPassword(String password) {

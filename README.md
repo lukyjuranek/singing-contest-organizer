@@ -2,16 +2,6 @@
 
 This project involves developing a Java-based computer system to manage singers competing in a singing contest. The system will have three roles: administrator, singer, and voter.
 
-### Prerequisites
-
-To run this project, you'll need:
-
-- Java SE Development Kit (JDK) 8 or higher installed on your machine.
-- A Java Integrated Development Environment (IDE) like Eclipse or IntelliJ IDEA to build and run the project.
-
-
-### Roles
-
 #### Administrator
 
 As an administrator, you can:
@@ -37,5 +27,3 @@ As a voter, you can:
 ### Conventions
 
 CamelCase naming convention for variables and functions.
-
-

@@ -14,7 +14,7 @@ public class Main {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        //make a new voter
+        // Creates some users for testing otherwise we would have to create them manually or have a database
         users = append(users, new Voter("Alex", "pass", "name", "surname", 0, "voter", new ArrayList<String>(Arrays.asList("Adele", "Beyonce", "Ed Sheeran", "Taylor Swift", "Bruno Mars", "Rihanna", "Justin Bieber", "Katy Perry", "Ariana Grande", "Lady Gaga")), new ArrayList<String>(Arrays.asList("Hello", "Rolling in the Deep", "Someone Like You", "Set Fire to the Rain", "Skyfall", "When We Were Young",  "Hometown Glory")), 10, "USA"));
         users = append(users, new Voter("Carlos", "pass", "name", "surname", 0, "voter", new ArrayList<String>(Arrays.asList("Adele", "Beyonce", "Ed Sheeran", "Taylor Swift", "Bruno Mars", "Rihanna", "Justin Bieber", "Katy Perry", "Ariana Grande", "Lady Gaga")), new ArrayList<String>(Arrays.asList("Hello", "Rolling in the Deep", "Someone Like You", "Set Fire to the Rain", "Skyfall", "When We Were Young",  "Hometown Glory")), 15, "USA"));
         users = append(users, new User("admin", "admin", "name", "surname", 1, "admin"));
@@ -139,7 +139,6 @@ public class Main {
                 \t--------------------------------------
                 \t8. Sign out
                 \t9. Quit
-
                 """);
     }
 
@@ -159,6 +158,10 @@ public class Main {
     }
 
     public static void manageUsers() {
+        /**
+         * Asks the user to select an option from the manage users menu and executes the
+         * corresponding method
+         */
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select an option: ");
         int option = scanner.nextInt();
@@ -173,7 +176,7 @@ public class Main {
     }
 
     public static void askForOptionAndExecute() {
-        //
+        /** Asks the user to select an option and executes the corresponding method */
         Scanner scanner = new Scanner(System.in);
         System.out.print("Select an option: ");
         int option = scanner.nextInt();
@@ -203,7 +206,8 @@ public class Main {
             System.out.println("Admin privileges required");
         }
     }
-    public  static void handleVoterOption(String option){
+
+    public static void handleVoterOption(String option) {
         if (singedInUserRole().equals("voter")) {
             switch (option) {
                 case "voteSong" -> voteSong();
@@ -213,7 +217,8 @@ public class Main {
             System.out.println("Voter privileges required");
         }
     }
-    public static void handleSingerOption(String option){
+    
+    public static void handleSingerOption(String option) {
         if (singedInUserRole().equals("singer")) {
             switch (option) {
                 case "showVotes" -> showVotes();
@@ -242,18 +247,19 @@ public class Main {
         scanner.close();
         System.exit(0);
     }
+
     public static ArrayList<Singer> createListSingers() {
         /** Creates a list of singers */
         ArrayList<Singer> singers = new ArrayList<>(); // empty list of singers
         for (User user : users) {
             if (user instanceof Singer singer) {
                 singers.add(singer);
-                }
             }
-        return singers;
         }
+        return singers;
+    }
 
-    public static ArrayList<Voter> createListVoter(){
+    public static ArrayList<Voter> createListVoter() {
         /** Creates a list of voters */
         ArrayList<Voter> voters = new ArrayList<>(); // empty list of voters
         for (User user : users) {
@@ -267,8 +273,8 @@ public class Main {
 
     public static void SortVotes(String option, ArrayList<Singer> singers){
         /** Sorts the votes in ascending or descending order, bubble sort */
-        // Get the list of singers
 
+        // Get the list of singers
         if (option.equals("ascending")) {
             // Sort votes in ascending order using bubble sort
             for (int j = 0; j < singers.size() - 1; j++) {
@@ -322,6 +328,7 @@ public class Main {
         if (i < high)
             partition(voters, i, high);
     }
+
     public static void sortVotesGiven(String option, ArrayList<Voter> voters) {
         /** Sorts the votes in ascending or descending order, bubble sort */
         // Sort the list of voters by given votes using quick sort
@@ -352,14 +359,14 @@ public class Main {
             System.out.println("Invalid option");
         }
         // Print the singers
-        for (Singer singer : singers)
+        for (Singer singer : singers) {
             System.out.print("{" + singer.getUsername() + ", Votes: " + singer.getReceivedVotes() + "} ");
         }
-
+    }
 
     public static void showSongs() {
         /** Prints the songs */
-        // Get the list of singers
+        // Gets the list of singers
         ArrayList<Singer> singers = createListSingers();
         char option;
         System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
@@ -374,16 +381,18 @@ public class Main {
         } else {
             System.out.println("Invalid option");
         }
-        //Sort songs in alphabetical order
+        // Sort songs in alphabetical order
         for (Singer singer : singers) {
-                singer.sortSongsAlphabet("ascending");
+            singer.sortSongsAlphabet("ascending");
         }
-        for (Singer singer : singers)
-            System.out.print("{" + singer.getArtisticName() + ", Songs: " + singer.showSongs() + " Total Votes: " + singer.getReceivedVotes() + "} ");
+        for (Singer singer : singers) {
+            System.out.print("{" + singer.getArtisticName() + ", Songs: " + singer.showSongs() + " Total Votes: "
+                    + singer.getReceivedVotes() + "} ");
         }
+    }
 
     public static void sortVotersAlphabetic(ArrayList<Voter> voters){
-    // sort voters in alphabetical order
+        /** sort voters in alphabetical order */
         for (int j = 0; j < voters.size() - 1; j++) {
             for (int i = 0; i < voters.size() - 1; i++) {
                 // Compare the usernames by full alphanumerical value
@@ -423,22 +432,11 @@ public class Main {
             System.out.print("{" + voter.getUsername() + ", Votes: " + voter.getVotes() + "} ");
     }
 
-
-
-
-
-    /** Prints the voters */
-
-
     public static void showVotes() {
-/* This option can be used just by a singer. The program will show the list
-of the song(s) with the received votes alphabetically. The program will also allow the
-user to change the order of the number of votes, ascending or descending.
-*/
-        //get the current users songs
-        //print the songs with options to change the order
-        //get the users id
-
+        /* Prints the votes. This option can be used just by a singer. The program will show the list
+        of the song(s) with the received votes alphabetically. The program will also allow the
+        user to change the order of the number of votes, ascending or descending.
+        */
         User singedInUser = getUserObjectById(signedInUserId, users);
 
         if (singedInUser instanceof Singer singer) {
@@ -458,12 +456,15 @@ user to change the order of the number of votes, ascending or descending.
             System.out.println("Your songs: " + singer.showSongs());
 
         }
-        /** Prints the votes */
     }
 
 
 
     public static void addSongOrGenre() {
+        /**
+         * Adds a song or a genre
+         * Shows the list
+         */
         User singedInUser = getUserObjectById(signedInUserId, users);
         if (singedInUser instanceof Singer singer) {
             System.out.print("Do you want to add a song or a genre? (s/g): ");
@@ -485,15 +486,11 @@ user to change the order of the number of votes, ascending or descending.
                 System.out.println("Invalid option");
             }
         }
-        
-
-        /**
-         * Adds a song or a genre
-         * Shows the list
-         */
     }
 
     public static void voteSong() {
+        /** Asks the user to vote for a song */
+    
         boolean found = false;
         //print list of songs using the method showSongs
         ArrayList<Singer> singers = createListSingers();
@@ -519,27 +516,22 @@ user to change the order of the number of votes, ascending or descending.
                     }
                 }
             }
-
         } else if (option == 'n') {
-            //return to the main menu
+            //returns to the main menu
             return;
         } else {
             System.out.println("Invalid option");
         }
-        // show the list of songs with the updated number of votes
 
+        // shows the list of songs with the updated number of votes
         if (!found){
             System.out.println("Song not found");
             return;
         }
 
 
-        // print the list of songs with the updated number of votes
+        // prints the list of songs with the updated number of votes
         showSongs();
-
-
-
-        /** Asks the user to vote for a song */
     }
 
     public static void registerUser() {
@@ -566,13 +558,12 @@ user to change the order of the number of votes, ascending or descending.
 
     public static void updateUserData() {
         /** Lets you select the user and update the data */
-
-        // Print the list of users with the username and the role
+        // Prints the list of users with the username and the role
         for (User user : users) {
             System.out.println("Username: " + user.getUsername() + ", Role: " + user.getRole());
         }
 
-        // Ask the administrator to select the one to update
+        // Asks the administrator to select the one to update
         System.out.print("Select the user to update: ");
         String username = scanner.nextLine();
 
@@ -637,6 +628,7 @@ user to change the order of the number of votes, ascending or descending.
 
     public static void registerSinger() {
         /** Registers the singer */
+
         // Ask for username, name, surname, password
         System.out.print("Enter the username: ");
         String username = scanner.nextLine();

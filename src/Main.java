@@ -561,42 +561,92 @@ public class Main {
     }
 
     public static void updateUserData() {
-        /** Lets you select the user and update the data */
         // Prints the list of users with the username and the role
         for (User user : users) {
             System.out.println("Username: " + user.getUsername() + ", Role: " + user.getRole());
         }
-
-        // Asks the administrator to select the one to update
+    
+        // Asks the administrator to select the user to update
         System.out.print("Select the user to update: ");
         String username = scanner.nextLine();
-
-        // Once selected, the administrator will change any data in the profile except for the role. If the user is a singer 
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                System.out.print("Enter the new username: ");
-                String newUsername = scanner.nextLine();
-                System.out.print("Enter the new password: ");
-                String newPassword = scanner.nextLine();
-
-
-                // Before storing the new data, the program will ask the administrator to confirm the operation
-                System.out.println("Are you sure you want to update the user? (y/n)");
-                char option = scanner.nextLine().charAt(0);
-                if (option == 'y') {
-                    user.setUsername(newUsername);
-                    user.setPassword(newPassword);
-                    System.out.println("User updated successfully");
-                } else if (option == 'n') {
-                    //return to the main menu
-                    return;
-                } else {
-                    System.out.println("Invalid option");
-                }
+    
+        // Finds the user to update
+        User userToUpdate = getUserObjectById(getUserIdByUsername(username, users), users);
+        // for (User user : users) {
+        //     if (user.getUsername().equals(username)) {
+        //         userToUpdate = user;
+        //         break;
+        //     }
+        // }
+    
+        if (userToUpdate == null) {
+            System.out.println("User not found");
+            return;
+        }
+    
+        // Prompts for the new username and password
+        System.out.print("Enter the new username: ");
+        String newUsername = scanner.nextLine();
+        System.out.print("Enter the new password: ");
+        String newPassword = scanner.nextLine();
+    
+        // Prompts for the additional data based on the role of the user
+        if (userToUpdate instanceof Singer) {
+            Singer singerToUpdate = (Singer) userToUpdate;
+            System.out.print("Enter the new artistic name: ");
+            String newArtisticName = scanner.nextLine();
+            System.out.print("Enter the new country: ");
+            String newCountry = scanner.nextLine();
+            System.out.print("Enter the new date of release: ");
+            String newDateOfRelease = scanner.nextLine();
+    
+            // Updates the singer with the new data
+            System.out.println("Are you sure you want to update the singer? (y/n)");
+            char option = scanner.nextLine().charAt(0);
+            if (option == 'y') {
+                singerToUpdate.setUsername(newUsername);
+                singerToUpdate.setPassword(newPassword);
+                singerToUpdate.setArtisticName(newArtisticName);
+                singerToUpdate.setCountry(newCountry);
+                singerToUpdate.setDateOfRelease(newDateOfRelease);
+                System.out.println("Singer updated successfully");
+            } else if (option == 'n') {
+                System.out.println("Update cancelled");
+            } else {
+                System.out.println("Invalid option");
+            }
+        } else if (userToUpdate instanceof Voter) {
+            Voter voterToUpdate = (Voter) userToUpdate;
+            System.out.print("Enter the new country: ");
+            String newCountry = scanner.nextLine();
+    
+            // Updates the voter with the new data
+            System.out.println("Are you sure you want to update the voter? (y/n)");
+            char option = scanner.nextLine().charAt(0);
+            if (option == 'y') {
+                voterToUpdate.setUsername(newUsername);
+                voterToUpdate.setPassword(newPassword);
+                voterToUpdate.setCountry(newCountry);
+                System.out.println("voter updated successfully");
+            } else if (option == 'n') {
+                System.out.println("Update cancelled");
+            } else {
+                System.out.println("Invalid option");
+            }
+        } else {
+            // Updates the user with the new data
+            System.out.println("Are you sure you want to update the user? (y/n)");
+            char option = scanner.nextLine().charAt(0);
+            if (option == 'y') {
+                userToUpdate.setUsername(newUsername);
+                userToUpdate.setPassword(newPassword);
+                System.out.println("User updated successfully");
+            } else if (option == 'n') {
+                System.out.println("Update cancelled");
+            } else {
+                System.out.println("Invalid option");
             }
         }
-
-
     }
 
     public static void removeUser() {

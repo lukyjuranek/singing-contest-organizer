@@ -23,7 +23,7 @@ public class Singer extends User {
             this.receivedVotes += song.getVotes();
     }
 
-    public void sortSongsAlphabet(String order){
+    public void sortSongsAlphabet(String order) {
         // sort songs in alphabetical order
         if (order.equals("ascending")) {
             for (int i = 0; i < songs.size(); i++) {
@@ -36,7 +36,7 @@ public class Singer extends User {
                     }
                 }
             }
-        } else if (order.equals("descending")){
+        } else if (order.equals("descending")) {
             for (int i = 0; i < songs.size(); i++) {
                 for (int j = i + 1; j < songs.size(); j++) {
                     if (songs.get(i).getSongName().compareTo(songs.get(j).getSongName()) < 0) {
@@ -61,6 +61,7 @@ public class Singer extends User {
     public ArrayList<Song> getSongTitles() {
         return songs;
     }
+
     public String showSongs() {
         StringBuilder toShow;
         toShow = new StringBuilder();
@@ -79,8 +80,8 @@ public class Singer extends User {
         return genres;
     }
 
-    public void setGenres(ArrayList<String> genres) {
-        this.genres = genres;
+    public void updateGenres(String genre) {
+        this.genres.add(genre);
     }
 
     public String getCountry() {
@@ -100,6 +101,8 @@ public class Singer extends User {
     }
 
     public int getReceivedVotes() {
+        updateVotes();
+        System.out.println("Votes: " + receivedVotes);
         return receivedVotes;
     }
 
@@ -108,9 +111,24 @@ public class Singer extends User {
     }
 
     // get songs
-    public ArrayList<Song> getSongs(){
+    public ArrayList<Song> getSongs() {
         return songs;
     }
+
+    public void setSongs(ArrayList<Song> songs) {
+        this.songs = songs;
+    }
+    public void updateSongs(Song newSong) {
+        this.songs.add(newSong);
+    }
+
+    public void updateVotes() {
+        this.receivedVotes = 0;
+
+        for (Song song : this.songs)
+            this.receivedVotes += song.getVotes();
+    }
 }
+
 
 

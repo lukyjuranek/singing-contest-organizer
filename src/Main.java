@@ -453,6 +453,29 @@ user to change the order of the number of votes, ascending or descending.
 
 
     public static void addSongOrGenre() {
+        User singedInUser = getUserObjectById(signedInUserId, users);
+        if (singedInUser instanceof Singer singer) {
+            System.out.print("Do you want to add a song or a genre? (s/g): ");
+            char option = scanner.nextLine().charAt(0);
+            if (option == 's') {
+                System.out.print("Enter the song name: ");
+                String songName = scanner.nextLine();
+                System.out.print("Enter the song votes: ");
+                int songVotes = scanner.nextInt();
+                Song song = new Song(songVotes, songName);
+                singer.updateSongs(song);
+                System.out.println("Song added!");
+            } else if (option == 'g') {
+                System.out.print("Enter the genre name: ");
+                String genreName = scanner.nextLine();
+                singer.updateGenres(genreName);
+                System.out.println("Genre added successfully!");
+            } else {
+                System.out.println("Invalid option");
+            }
+        }
+        
+
         /**
          * Adds a song or a genre
          * Shows the list

@@ -135,14 +135,41 @@ public class Main {
                 \t-----(Voter privileges required)------
                 \t6. Vote song
                 \t-----(Admin privileges required)------
-                \t7. Add user
-                \t8. Update data
-                \t9. Remove user
+                \t7. Manage Users
                 \t--------------------------------------
-                \t10. Sign out
-                \t11. Quit
+                \t8. Sign out
+                \t9. Quit
 
                 """);
+    }
+
+    public static void showManageUsers() {
+        System.out.print("""
+                Manage Users:
+                \t--------------------------------------
+                \t1. Add User
+                \t2. Update Data
+                \t3. Remove User
+                \t--------------------------------------
+                \t4. Back to Menu
+                \t5. Exit
+
+                """);
+        manageUsers();
+    }
+
+    public static void manageUsers() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Select an option: ");
+        int option = scanner.nextInt();
+        switch (option) {
+            case 1 -> handleAdminOption("registerUser");
+            case 2 -> handleAdminOption("updateUserData");
+            case 3 -> handleAdminOption("removeUser");
+            case 4 -> System.out.print("");
+            case 5 -> quit();
+            default -> System.out.println("Invalid admin command");
+        }
     }
 
     public static void askForOptionAndExecute() {
@@ -157,11 +184,9 @@ public class Main {
             case 4 -> handleSingerOption("showVotes");
             case 5 -> handleSingerOption("addSong");
             case 6 -> handleVoterOption("voteSong");
-            case 7 -> handleAdminOption("registerUser");
-            case 8 -> handleAdminOption("updateUserData");
-            case 9 -> handleAdminOption("removeUser");
-            case 10 -> signOut();
-            case 11 -> quit();
+            case 7 -> showManageUsers();
+            case 8 -> signOut();
+            case 9 -> quit();
             default -> System.out.println("No option selected");
         }
     }
@@ -240,18 +265,6 @@ public class Main {
         return voters;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     public static void SortVotes(String option, ArrayList<Singer> singers){
         /** Sorts the votes in ascending or descending order, bubble sort */
         // Get the list of singers
@@ -321,8 +334,6 @@ public class Main {
             System.out.println("Invalid option");
         }
     }
-
-
 
     public static void showSingers() {
         /** Prints the singers, sort by votes (ascending/descending) */
@@ -672,7 +683,7 @@ user to change the order of the number of votes, ascending or descending.
     }
 
     public static <T> T[] append(T[] arr, T element) {
-        /** Return the origianl array with a new element appended to it
+        /** Return the original array with a new element appended to it
          * param array
          * param element
          * 

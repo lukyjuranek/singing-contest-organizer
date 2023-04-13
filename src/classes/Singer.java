@@ -8,7 +8,6 @@ public class Singer extends User {
     private ArrayList<String> genres;
     private String country;
     private String dateOfRelease;
-    private int receivedVotes;
 
     public Singer(String username, String password, String name, String surname, int id, String role, String artisticName, ArrayList<Song> songs, ArrayList<String> genres, String country, String dateOfRelease) {
         super(username, password, name, surname, id, role);
@@ -17,10 +16,6 @@ public class Singer extends User {
         this.genres = genres;
         this.country = country;
         this.dateOfRelease = dateOfRelease;
-        this.receivedVotes = 0;
-        // sum of all votes of all songs
-        for (Song song : songs)
-            this.receivedVotes += song.getVotes();
     }
 
     public void sortSongsAlphabet(String order) {
@@ -101,16 +96,13 @@ public class Singer extends User {
     }
 
     public int getReceivedVotes() {
-        updateVotes();
-        System.out.println("Votes: " + receivedVotes);
+        int receivedVotes = 0;
+        for (Song song : this.songs)
+            receivedVotes += song.getVotes();
+            
         return receivedVotes;
     }
 
-    public void setReceivedVotes(int receivedVotes) {
-        this.receivedVotes = receivedVotes;
-    }
-
-    // get songs
     public ArrayList<Song> getSongs() {
         return songs;
     }
@@ -121,14 +113,4 @@ public class Singer extends User {
     public void updateSongs(Song newSong) {
         this.songs.add(newSong);
     }
-
-    public void updateVotes() {
-        this.receivedVotes = 0;
-
-        for (Song song : this.songs)
-            this.receivedVotes += song.getVotes();
-    }
 }
-
-
-

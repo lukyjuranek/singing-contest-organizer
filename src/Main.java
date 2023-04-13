@@ -346,13 +346,13 @@ public class Main {
         /** Prints the singers, sort by votes (ascending/descending) */
         // Get the list of singers
         ArrayList<Singer> singers = createListSingers();
-        char option;
+        String option;
         System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
-        option = scanner.nextLine().charAt(0);
-        if (option == 'a') {
+        option = scanner.nextLine();
+        if (option.equals("a")) {
             // call the sort method
             SortVotes("ascending", singers);
-        } else if (option == 'd') {
+        } else if (option.equals("d")) {
             // call the sort method
             SortVotes("descending", singers);
         } else {
@@ -360,7 +360,7 @@ public class Main {
         }
         // Print the singers
         for (Singer singer : singers) {
-            System.out.print("{" + singer.getUsername() + ", Votes: " + singer.getReceivedVotes() + "} ");
+            System.out.println("\t" + singer.getUsername() + ", Votes: " + singer.getReceivedVotes());
         }
     }
 
@@ -368,14 +368,14 @@ public class Main {
         /** Prints the songs */
         // Gets the list of singers
         ArrayList<Singer> singers = createListSingers();
-        char option;
+        String option;
         System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
-        option = scanner.nextLine().charAt(0);
-        if (option == 'a') {
+        option = scanner.nextLine();
+        if (option.equals("a")) {
             // call the sort method
             SortVotes("ascending", singers);
 
-        } else if (option == 'd') {
+        } else if (option.equals("d")) {
             // call the sort method
             SortVotes("descending", singers);
         } else {
@@ -386,8 +386,8 @@ public class Main {
             singer.sortSongsAlphabet("ascending");
         }
         for (Singer singer : singers) {
-            System.out.print("{" + singer.getArtisticName() + ", Songs: " + singer.showSongs() + " Total Votes: "
-                    + singer.getReceivedVotes() + "} ");
+            System.out.println("\t" + singer.getArtisticName() + ", Songs: " + singer.showSongs() + " Total Votes: "
+                    + singer.getReceivedVotes());
         }
     }
 
@@ -408,20 +408,20 @@ public class Main {
     public static void showVoters() {
         /** Prints the voters, sort by votes (ascending/descending) */
         ArrayList<Voter> voters = createListVoter();
-        char option;
+        String option;
         sortVotersAlphabetic(voters);
 
         // Print the singers in alphabetical order first
         for (Voter voter : voters)
-            System.out.print("{" + voter.getUsername() + ", Votes Given: " + voter.getVotes() + "} ");
+            System.out.println("\t" + voter.getUsername() + ", Votes Given: " + voter.getVotes());
         System.out.println();
 
         System.out.print("Do you want the votes ordered in ascending or descending order? (a/d): ");
-        option = scanner.nextLine().charAt(0);
-        if (option == 'a') {
+        option = scanner.nextLine();
+        if (option.equals("a")) {
             // call the sort method (quick sort)
             sortVotesGiven("ascending", voters);
-        } else if (option == 'd') {
+        } else if (option.equals("d")) {
             // call the sort method (quick sort)
             sortVotesGiven("descending", voters);
         } else {
@@ -429,7 +429,7 @@ public class Main {
         }
         // Print the singers after sorting
         for (Voter voter : voters)
-            System.out.print("{" + voter.getUsername() + ", Votes: " + voter.getVotes() + "} ");
+            System.out.println("\t" + voter.getUsername() + ", Votes: " + voter.getVotes());
     }
 
     public static void showVotes() {
@@ -508,8 +508,12 @@ public class Main {
                 for (Song song1 : singer.getSongs()) {
                     if (song1.getSongName().equals(song)) {
                         song1.setVotes(song1.getVotes() + 1);
-                        // update singers total votes
-                        singer.setReceivedVotes(singer.getReceivedVotes() + 1);
+                         // update voters total votes
+                        // singer.setReceivedVotes(singer.getReceivedVotes() + 1);
+                        User userObjectById = getUserObjectById(signedInUserId, users);
+                        if (userObjectById instanceof Voter voter) {
+                            voter.setVotes(voter.getVotes() + 1);
+                        };
                         found = true;
                         // song is found, break the loop
                         break;
